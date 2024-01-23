@@ -1,5 +1,9 @@
 <?php
 namespace App\Http\Traits;
+require __DIR__.'/../../../vendor/autoload.php';
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+
 trait SaveFileTrait
 {
 
@@ -29,6 +33,18 @@ function savefile($photo, $folder) {
 
     // Move the file to the destination folder
     $photo->move($path, $fileName);
+
+    // create image manager with desired driver
+    $manager = new ImageManager(new Driver());
+
+    // read image from file system
+    $image = $manager->read($folder . $fileName);
+
+    // resize image proportionally to 300px width
+    $image->scale(width: 400);
+
+    // save modified image in new format 
+    $image->save($folder . $fileName);
 
     // Return the final file name (with extension)
     return $fileName;
