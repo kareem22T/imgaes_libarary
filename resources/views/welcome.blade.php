@@ -204,7 +204,7 @@
         </div> 
         
         {{-- on choose --}}
-        <div class="choosed_img" v-html="choosed_img"></div>
+        <div class="choosed_img"></div>
       </div>
     </div>
   </div>
@@ -231,6 +231,7 @@
           img_for_seo: null,
           img_for_seo_title: null,
           img_for_seo_alt: null,
+          containerSelector: ".choosed_img"
         }
       },
       methods: {
@@ -490,7 +491,9 @@
             }
         },
         choose(src, alt, title) {
-            this.choosed_img = `<img src='${src}' alt='${alt}' title='${title}' />`
+            let img = `<img src='${src}' alt='${alt}' title='${title}' />`
+            let html = $('.choosed_img').html()
+            $(this.containerSelector).html(html + img)
         },
         photoChanges(event) {
             this.thumbnail = event.target.files[0];
@@ -560,9 +563,9 @@
         this.getImages()
       },
       mounted() {
-        $(document).on('click', '.imgs .img', function () {
-            $(this).css('border', '2px solid #13DEB9')
-            $(this).siblings().css('border', 'none')
+        $(document).on('click', '.imgs .img button', function () {
+            $(this).parents('.img').css('border', '2px solid #13DEB9')
+            $(this).parents('.img').siblings().css('border', 'none')
         })
       },
     }).mount('#images_wrapper')
